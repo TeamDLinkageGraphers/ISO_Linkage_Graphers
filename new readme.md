@@ -12,23 +12,19 @@ This project models corporate linkages related to fentanyl trafficking using AWS
 
 └── README.md
 
+
 ## Prerequisites
-- AWS account with Neptune access
-- Neptune endpoint: `db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com:8182`
-- Python 3.8+
+- **AWS Account** with Neptune cluster access
+- **Neptune Instance**:
+  - Endpoint: `db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com`
+  - Port: `8182`
+- **Python 3.8+** with pip
 
-## Setup
+## Setup Instructions
 ```bash
+# Clone repository
 git clone https://github.com/TeamDLinkageGraphers/ISO_Linkage_Graphers.git
-cd your-repo
+cd [ISO_Linkage_Graphers]
+
+# Install dependencies
 pip install -r requirements.txt
-
-
-## Setup
-Update Neptune endpoint in notebook:
-neptune_endpoint = "https://db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com:8182/gremlin"
-
-## Running
-Start Jupyter:
-```bash
-jupyter notebook
