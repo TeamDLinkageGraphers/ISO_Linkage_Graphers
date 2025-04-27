@@ -1,0 +1,38 @@
+# Graph Visualization with AWS Neptune
+
+## Overview
+This project models corporate linkages related to fentanyl trafficking using AWS Neptune. It includes data loading, graph creation, and visualization capabilities.
+
+## Repository Structure
+├── 1st_part_of_graph_visuals.ipynb
+├── data/
+├── requirements.txt
+└── README.md
+
+## Prerequisites
+- AWS account with Neptune access
+- Neptune endpoint: `db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com:8182`
+- Python 3.8+
+
+## Setup
+```bash
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+pip install -r requirements.txt
+
+## Configuration
+Update Neptune endpoint in notebook:
+neptune_endpoint = "https://db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com:8182/gremlin"
+
+## Running
+Start Jupyter:
+```bash
+jupyter notebook
+
+Execute cells in 1st_part_of_graph_visuals.ipynb
+
+## Visualization
+Access AWS Neptune Graph Explorer
+
+## Run queries:
+g.V().hasLabel('BaseCompany').has('name', 'Example Corp').out().path()
