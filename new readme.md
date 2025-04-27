@@ -5,8 +5,11 @@ This project models corporate linkages related to fentanyl trafficking using AWS
 
 ## Repository Structure
 ├── 1st_part_of_graph_visuals.ipynb
+
 ├── data/
+
 ├── requirements.txt
+
 └── README.md
 
 ## Prerequisites
@@ -20,7 +23,8 @@ git clone https://github.com/TeamDLinkageGraphers/ISO_Linkage_Graphers.git
 cd your-repo
 pip install -r requirements.txt
 
-## Configuration
+
+## Setup
 Update Neptune endpoint in notebook:
 neptune_endpoint = "https://db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com:8182/gremlin"
 
@@ -28,16 +32,3 @@ neptune_endpoint = "https://db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptu
 Start Jupyter:
 ```bash
 jupyter notebook
-
-Execute cells in 1st_part_of_graph_visuals.ipynb
-
-Visualization
-Access AWS Neptune Graph Explorer through AWS Console
-
-Run queries interactively:
-
-## Visualization
-Access AWS Neptune Graph Explorer
-
-## Run queries:
-g.V().hasLabel('BaseCompany').has('name', 'Example Corp').out().path()
