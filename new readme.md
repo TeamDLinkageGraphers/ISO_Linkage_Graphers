@@ -31,6 +31,11 @@ jupyter notebook
 
 Execute cells in 1st_part_of_graph_visuals.ipynb
 
+Visualization
+Access AWS Neptune Graph Explorer through AWS Console
+
+Run queries interactively:
+
 ## Visualization
 Access AWS Neptune Graph Explorer
 
