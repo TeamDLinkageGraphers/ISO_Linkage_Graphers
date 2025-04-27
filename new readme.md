@@ -20,7 +20,7 @@ git clone https://github.com/TeamDLinkageGraphers/ISO_Linkage_Graphers.git
 cd your-repo
 pip install -r requirements.txt
 
-# Configuration
+## Configuration
 Update Neptune endpoint in notebook:
 neptune_endpoint = "https://db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com:8182/gremlin"
 
