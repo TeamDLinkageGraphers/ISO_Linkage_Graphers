@@ -12,13 +12,21 @@ This project models corporate linkages related to fentanyl trafficking using AWS
 
 └── README.md
 
-
 ## Prerequisites
 - **AWS Account** with Neptune cluster access
 - **Neptune Instance**:
   - Endpoint: `db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com`
   - Port: `8182`
 - **Python 3.8+** with pip
+
+## Configuration
+
+Update the Neptune endpoint in 1st_part_of_graph_visuals.ipynb:
+neptune_endpoint = "https://db-neptune-1-instance-1.c8qttgkgfep5.us-east-1.neptune.amazonaws.com:8182/gremlin"
+headers = {"Content-Type": "application/json"}
+
+def send_gremlin(query):
+    payload = {"gremlin": query}
 
 ## Setup Instructions
 ```bash
@@ -28,3 +36,8 @@ cd [ISO_Linkage_Graphers]
 
 # Install dependencies
 pip install -r requirements.txt
+
+
+
+
+
