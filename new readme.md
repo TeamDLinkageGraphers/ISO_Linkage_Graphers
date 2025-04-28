@@ -9,7 +9,8 @@ This project models corporate linkages related to fentanyl trafficking using AWS
 
 ├── data/
 
-├── [requirements.txt] (https://github.com/TeamDLinkageGraphers/ISO_Linkage_Graphers/blob/11aa2dd6400ae6f16953f777f523c4cd867d3d02/requirements.txt)
+├── [requirements.txt](https://github.com/TeamDLinkageGraphers/ISO_Linkage_Graphers/blob/11aa2dd6400ae6f16953f777f523c4cd867d3d02/requirements.txt)
+
 
 └── README.md
 
