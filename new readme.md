@@ -4,7 +4,7 @@
 This project models corporate linkages related to fentanyl trafficking using AWS Neptune. It includes data loading, graph creation, and visualization capabilities.
 
 ## Repository Structure
-├── [1st part of the graph visuals.ipynb)
+├──(https://github.com/TeamDLinkageGraphers/ISO_Linkage_Graphers/blob/d92742aae5fc281ee4e8aed9923ec7693eb57474/1st%20part%20of%20the%20graph%20visuals.ipynb)
 
 ├── data/
 
