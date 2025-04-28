@@ -5,8 +5,11 @@ This project models corporate linkages related to fentanyl trafficking using AWS
 
 ## Repository Structure
 ├── [1st part of the graph visuals.ipynb)
+
 ├── data/
+
 ├── requirements.txt
+
 └── README.md
 
 
