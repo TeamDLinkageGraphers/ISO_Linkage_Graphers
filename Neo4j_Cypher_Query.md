@@ -93,7 +93,7 @@ WHERE companyName IS NOT NULL AND companyName <> ''
 MERGE (ac:AssociatedCompany {name: companyName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
-// ✅ Return all components
+// Return all components
 RETURN DISTINCT base, lm, lv, ac;
 
 //3rd company - Conier Chem & Pharma Limited
