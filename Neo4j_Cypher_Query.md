@@ -1,298 +1,315 @@
 //file with cypher query for top companies 
 //Cyphe query for 1st company - Shanghai Hao Zhun Biological Technology Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
 WHERE baseName = 'Shanghai Hao Zhun Biological Technology Co., Ltd'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
 
-// STEP 1: Aggregate linkage data for each unique combination of base, method, and value.
+// Step 1: Aggregate
 WITH baseName, linkMethod, linkValue,
      collect(DISTINCT assocName) AS assocCompanies,
      count(*) AS frequency
 ORDER BY frequency DESC
 WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies}) AS linkRecords
+     collect({value: linkValue, method: linkMethod, frequency: frequency, companies: assocCompanies}) AS linkRecords
 
-// STEP 2: For each base and method, keep only the top 2 linkage records (most weighted)
+// Step 2: Top 2
 WITH baseName, linkMethod, linkRecords[0..2] AS topRecords
 
-// STEP 3: Create the BaseConsolidation node and the LinkageMethod node (head and hands)
+// Step 3: Create nodes
 MERGE (base:BaseConsolidation {name: baseName})
 MERGE (lm:LinkageMethod {type: linkMethod})
 MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod
+WITH base, lm, topRecords
 
-// STEP 4: Create LinkageValue node and set frequency + display
+// Step 4: Linkage values
 UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
-SET lv.frequency = rec.frequency,
-    lv.display = rec.value + " (" + toString(rec.frequency) + ")"
-MERGE (lm)-[:HAS_LINKAGE]->(lv)
-WITH base, lm, lv, rec
-
-// STEP 5: Attach associated companies to the linkage value node
-UNWIND rec.companies AS compName
-MERGE (ac:AssociatedCompany {name: compName})
-MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
-
-RETURN DISTINCT base, lm, lv, ac;
-
-//2nd company - Amadis Chemical Company Limited
-LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
-WHERE baseName = 'Amadis Chemical Company Limited'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
-
-// STEP 1: Aggregate linkage data for each unique combination of base, method, and value.
-WITH baseName, linkMethod, linkValue,
-     collect(DISTINCT assocName) AS assocCompanies,
-     count(*) AS frequency
-ORDER BY frequency DESC
-WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies}) AS linkRecords
-
-// STEP 2: For each base and method, keep only the top 2 linkage records (most weighted)
-WITH baseName, linkMethod, linkRecords[0..2] AS topRecords
-
-// STEP 3: Create the BaseConsolidation node and the LinkageMethod node (head and hands)
-MERGE (base:BaseConsolidation {name: baseName})
-MERGE (lm:LinkageMethod {type: linkMethod})
-MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod
-
-// STEP 4: Create LinkageValue node and set frequency + display
-UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
-SET lv.frequency = rec.frequency,
-    lv.display = rec.value + " (" + toString(rec.frequency) + ")"
-MERGE (lm)-[:HAS_LINKAGE]->(lv)
-WITH base, lm, lv, rec
-
-// STEP 5: Attach associated companies to the linkage value node
-UNWIND rec.companies AS compName
-MERGE (ac:AssociatedCompany {name: compName})
-MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
-
-RETURN DISTINCT base, lm, lv, ac;
-
-//3rd company - Conier Chem & Pharma Limited
-LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
-WHERE baseName = 'Conier Chem & Pharma Limited'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
-
-// STEP 1: Aggregate linkage data for each unique combination of base, method, and value
-WITH baseName, linkMethod, linkValue,
-     collect(DISTINCT assocName) AS assocCompanies,
-     count(*) AS frequency
-ORDER BY frequency DESC
-WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
-
-// STEP 2: Create the BaseConsolidation and LinkageMethod nodes
-MERGE (base:BaseConsolidation {name: baseName})
-MERGE (lm:LinkageMethod {type: linkMethod})
-MERGE (base)-[:HAS_METHOD]->(lm)
-WITH lm, topRecords, linkMethod
-
-// STEP 3: Create LinkageValue nodes
-UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
 SET lv.frequency = rec.frequency,
     lv.display = rec.value + " (" + toString(rec.frequency) + ")"
 MERGE (lm)-[:HAS_LINKAGE]->(lv)
 WITH lv, rec
 
-// STEP 4: Link associated companies to the linkage value
+// Step 5: Associated companies
 UNWIND rec.companies AS compName
 MERGE (ac:AssociatedCompany {name: compName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
-RETURN DISTINCT lv, ac
+RETURN DISTINCT lv, ac;
+
+//2nd company - Amadis Chemical Company Limited
+LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
+WHERE baseName = 'Amadis Chemical Company Limited'
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
+
+// STEP 1: Aggregate linkage data
+WITH baseName, linkMethod, linkValue,
+     collect(DISTINCT assocName) AS assocCompanies,
+     count(*) AS frequency
+ORDER BY frequency DESC
+WITH baseName, linkMethod,
+     collect({value: linkValue, method: linkMethod, frequency: frequency, companies: assocCompanies}) AS linkRecords
+
+// STEP 2: Top 2 linkage values per method
+WITH baseName, linkMethod, linkRecords[0..2] AS topRecords
+
+// STEP 3: Create base and method nodes
+MERGE (base:BaseConsolidation {name: baseName})
+MERGE (lm:LinkageMethod {type: linkMethod})
+MERGE (base)-[:HAS_METHOD]->(lm)
+WITH base, lm, topRecords
+
+// STEP 4: Create LinkageValue nodes
+UNWIND topRecords AS rec
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
+SET lv.frequency = rec.frequency,
+    lv.display = rec.value + " (" + toString(rec.frequency) + ")"
+MERGE (lm)-[:HAS_LINKAGE]->(lv)
+WITH lv, rec
+
+// STEP 5: Link associated companies
+UNWIND rec.companies AS compName
+MERGE (ac:AssociatedCompany {name: compName})
+MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
+
+RETURN DISTINCT lv, ac;
+
+//3rd company - Conier Chem & Pharma Limited
+LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
+WHERE baseName = 'Conier Chem & Pharma Limited'
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
+
+// STEP 1: Aggregate linkage data
+WITH baseName, linkMethod, linkValue,
+     collect(DISTINCT assocName) AS assocCompanies,
+     count(*) AS frequency
+ORDER BY frequency DESC
+WITH baseName, linkMethod,
+     collect({value: linkValue, method: linkMethod, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
+
+// STEP 2: Create base and method nodes
+MERGE (base:BaseConsolidation {name: baseName})
+MERGE (lm:LinkageMethod {type: linkMethod})
+MERGE (base)-[:HAS_METHOD]->(lm)
+WITH lm, topRecords
+
+// STEP 3: Create LinkageValue nodes
+UNWIND topRecords AS rec
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
+SET lv.frequency = rec.frequency,
+    lv.display = rec.value + " (" + toString(rec.frequency) + ")"
+MERGE (lm)-[:HAS_LINKAGE]->(lv)
+WITH lv, rec
+
+// STEP 4: Link associated companies
+UNWIND rec.companies AS compName
+MERGE (ac:AssociatedCompany {name: compName})
+MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
+
+RETURN DISTINCT lv, ac;
+
 
 //4th company - Hebei Miaoyin Technology Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
 WHERE baseName = 'Hebei Miaoyin Technology Co., Ltd'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
 
-// STEP 1: Aggregate linkage data for each unique combination of base, method, and value
+// STEP 1: Aggregate linkage data
 WITH baseName, linkMethod, linkValue,
      collect(DISTINCT assocName) AS assocCompanies,
      count(*) AS frequency
 ORDER BY frequency DESC
 WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
+     collect({value: linkValue, method: linkMethod, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
 
-// STEP 2: Create the BaseConsolidation and LinkageMethod nodes
+// STEP 2: Create base and method nodes
 MERGE (base:BaseConsolidation {name: baseName})
 MERGE (lm:LinkageMethod {type: linkMethod})
 MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod
+WITH base, lm, topRecords
 
 // STEP 3: Create LinkageValue nodes
 UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
 SET lv.frequency = rec.frequency,
     lv.display = rec.value + " (" + toString(rec.frequency) + ")"
 MERGE (lm)-[:HAS_LINKAGE]->(lv)
-WITH base, lm, lv, rec
+WITH lv, rec
 
-// STEP 4: Link associated companies to the linkage value
+// STEP 4: Link associated companies
 UNWIND rec.companies AS compName
 MERGE (ac:AssociatedCompany {name: compName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
-RETURN DISTINCT base, lm, lv, ac
+RETURN DISTINCT lv, ac;
+
 
 //5th company - Shanghai Run Biotech Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
-WHERE baseName = 'Shanghai Run Biotech Co., Ltd'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
+WHERE baseName = 'Hebei Miaoyin Technology Co., Ltd'
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
 
-// STEP 1: Aggregate linkage data for each unique combination of base, method, and value
+// Step 1: Aggregate
 WITH baseName, linkMethod, linkValue,
      collect(DISTINCT assocName) AS assocCompanies,
      count(*) AS frequency
 ORDER BY frequency DESC
 WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
+     collect({value: linkValue, method: linkMethod, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
 
-// STEP 2: Create the BaseConsolidation and LinkageMethod nodes
+// Step 2: Create Base + Method nodes
 MERGE (base:BaseConsolidation {name: baseName})
 MERGE (lm:LinkageMethod {type: linkMethod})
 MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod  // ✅ This WITH was missing before UNWIND
+WITH lm, topRecords
 
-// STEP 3: Create LinkageValue nodes
+// Step 3: Create LinkageValue nodes
 UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
 SET lv.frequency = rec.frequency,
     lv.display = rec.value + " (" + toString(rec.frequency) + ")"
 MERGE (lm)-[:HAS_LINKAGE]->(lv)
-WITH base, lm, lv, rec  // ✅ Needed for the next UNWIND
+WITH lv, rec
 
-// STEP 4: Link associated companies to the linkage value
+// Step 4: Link Associated Companies
 UNWIND rec.companies AS compName
 MERGE (ac:AssociatedCompany {name: compName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
-RETURN DISTINCT base, lm, lv, ac
+RETURN DISTINCT lv, ac;
+
 
 //6th company - Laidiou Biological Technology Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
 WHERE baseName = 'Laidiou Biological Technology Co., Ltd'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
 
-// STEP 1: Aggregate linkage data for each unique combination of base, method, and value
+// STEP 1: Aggregate linkage data
 WITH baseName, linkMethod, linkValue,
      collect(DISTINCT assocName) AS assocCompanies,
      count(*) AS frequency
 ORDER BY frequency DESC
 WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
+     collect({
+         value: linkValue,
+         method: linkMethod,
+         frequency: frequency,
+         companies: assocCompanies
+     })[0..2] AS topRecords
 
 // STEP 2: Create the BaseConsolidation and LinkageMethod nodes
 MERGE (base:BaseConsolidation {name: baseName})
 MERGE (lm:LinkageMethod {type: linkMethod})
 MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod
+WITH lm, topRecords
 
 // STEP 3: Create LinkageValue nodes
 UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
 SET lv.frequency = rec.frequency,
     lv.display = rec.value + " (" + toString(rec.frequency) + ")"
 MERGE (lm)-[:HAS_LINKAGE]->(lv)
-WITH base, lm, lv, rec
+WITH lv, rec
 
-// STEP 4: Link associated companies to the linkage value
+// STEP 4: Link associated companies
 UNWIND rec.companies AS compName
 MERGE (ac:AssociatedCompany {name: compName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
-RETURN DISTINCT base, lm, lv, ac
+RETURN DISTINCT lv, ac;
+
 
 //7th company - Henan Sunlake Enterprise Corporation
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
 WHERE baseName = 'Henan Sunlake Enterprise Corporation'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
 
+// Aggregate linkage data
 WITH baseName, linkMethod, linkValue,
      collect(DISTINCT assocName) AS assocCompanies,
      count(*) AS frequency
 ORDER BY frequency DESC
 WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
+     collect({
+         value: linkValue,
+         method: linkMethod,
+         frequency: frequency,
+         companies: assocCompanies
+     })[0..2] AS topRecords
 
-WITH baseName, linkMethod, topRecords  // ✅ required to keep data before MERGE
-
+// Create base and method nodes
 MERGE (base:BaseConsolidation {name: baseName})
 MERGE (lm:LinkageMethod {type: linkMethod})
 MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod
+WITH lm, topRecords
 
+// Create linkage value nodes
 UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
 SET lv.frequency = rec.frequency,
     lv.display = rec.value + " (" + toString(rec.frequency) + ")"
 MERGE (lm)-[:HAS_LINKAGE]->(lv)
-WITH base, lm, lv, rec
+WITH lv, rec
 
+// Link associated companies
 UNWIND rec.companies AS compName
 MERGE (ac:AssociatedCompany {name: compName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
-RETURN DISTINCT base, lm, lv, ac
+RETURN DISTINCT lv, ac;
+
 
 //8th company - Dc Chemicals
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
 WHERE baseName = 'Dc Chemicals'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
 WITH baseName, linkMethod, linkValue, assocName
 
 // STEP 1: Group linkage info per value
@@ -301,17 +318,22 @@ WITH baseName, linkMethod, linkValue,
      count(*) AS frequency
 ORDER BY frequency DESC
 WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
+     collect({
+         value: linkValue,
+         method: linkMethod,
+         frequency: frequency,
+         companies: assocCompanies
+     })[0..2] AS topRecords
 
 // STEP 2: Create main Base + Method node
 MERGE (base:BaseConsolidation {name: baseName})
 MERGE (lm:LinkageMethod {type: linkMethod})
 MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod
+WITH base, lm, topRecords
 
 // STEP 3: Link top 2 values to method
 UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
 SET lv.frequency = rec.frequency,
     lv.display = rec.value + " (" + toString(rec.frequency) + ")"
 MERGE (lm)-[:HAS_LINKAGE]->(lv)
@@ -323,18 +345,19 @@ MERGE (ac:AssociatedCompany {name: compName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // FINAL GRAPH RETURN
-RETURN base, lm, lv, ac
+RETURN base, lm, lv, ac;
+
 
 //9th company - Hubei Enxing Biotechnology Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
 WHERE baseName = 'Hubei Enxing Biotechnology Co., Ltd'
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
 WITH baseName, linkMethod, linkValue, assocName
 
 // STEP 1: Group linkage info per value
@@ -343,17 +366,22 @@ WITH baseName, linkMethod, linkValue,
      count(*) AS frequency
 ORDER BY frequency DESC
 WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
+     collect({
+         value: linkValue,
+         method: linkMethod,
+         frequency: frequency,
+         companies: assocCompanies
+     })[0..2] AS topRecords
 
 // STEP 2: Create main Base + Method node
 MERGE (base:BaseConsolidation {name: baseName})
 MERGE (lm:LinkageMethod {type: linkMethod})
 MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod
+WITH base, lm, topRecords
 
 // STEP 3: Link top 2 values to method
 UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
 SET lv.frequency = rec.frequency,
     lv.display = rec.value + " (" + toString(rec.frequency) + ")"
 MERGE (lm)-[:HAS_LINKAGE]->(lv)
@@ -365,18 +393,19 @@ MERGE (ac:AssociatedCompany {name: compName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // FINAL GRAPH RETURN
-RETURN base, lm, lv, ac
+RETURN base, lm, lv, ac;
+
 
 //10th company - Career Henan Chemical Co
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
-WITH row.`Base Consolidation Name` AS baseName,
-     row.`Associated Name` AS assocName,
-     row.`Linkage Value` AS linkValue,
-     row.`Linkage Method` AS linkMethod
-WHERE toLower(trim(baseName)) = toLower(trim('Career Henan Chemical Co'))
-  AND assocName IS NOT NULL
-  AND linkValue IS NOT NULL
-  AND linkMethod IS NOT NULL
+WITH trim(row.`Base_Consolidation_Name`) AS baseName,
+     trim(row.`Associated_Company_Name`) AS assocName,
+     trim(row.`Linkage_Value`) AS linkValue,
+     trim(row.`Linkage_Method`) AS linkMethod
+WHERE baseName = 'Hubei Enxing Biotechnology Co., Ltd'
+  AND assocName IS NOT NULL AND assocName <> ''
+  AND linkValue IS NOT NULL AND linkValue <> ''
+  AND linkMethod IS NOT NULL AND linkMethod <> ''
 WITH baseName, linkMethod, linkValue, assocName
 
 // STEP 1: Group linkage info per value
@@ -384,27 +413,32 @@ WITH baseName, linkMethod, linkValue,
      collect(DISTINCT assocName) AS assocCompanies,
      count(*) AS frequency
 ORDER BY frequency DESC
-WITH baseName, linkMethod,
-     collect({value: linkValue, frequency: frequency, companies: assocCompanies})[0..2] AS topRecords
+WITH baseName,
+     collect({
+         value: linkValue,
+         method: linkMethod,
+         frequency: frequency,
+         companies: assocCompanies
+     })[0..2] AS topRecords
 
-// STEP 2: Create main Base + Method node
+// STEP 2: Create base node
 MERGE (base:BaseConsolidation {name: baseName})
-MERGE (lm:LinkageMethod {type: linkMethod})
-MERGE (base)-[:HAS_METHOD]->(lm)
-WITH base, lm, topRecords, linkMethod
+WITH base, topRecords
 
-// STEP 3: Link top 2 values to method
+// STEP 3: Linkage methods and values
 UNWIND topRecords AS rec
-MERGE (lv:LinkageValue {value: rec.value, method: linkMethod})
+MERGE (lm:LinkageMethod {type: rec.method})
+MERGE (base)-[:HAS_METHOD]->(lm)
+MERGE (lv:LinkageValue {value: rec.value, method: rec.method})
 SET lv.frequency = rec.frequency,
     lv.display = rec.value + " (" + toString(rec.frequency) + ")"
 MERGE (lm)-[:HAS_LINKAGE]->(lv)
-WITH base, lm, lv, rec
+WITH lv, rec
 
-// STEP 4: Link each value to associated companies
+// STEP 4: Associated companies
 UNWIND rec.companies AS compName
 MERGE (ac:AssociatedCompany {name: compName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
-// RETURN GRAPH
-RETURN base, lm, lv, ac
+// Final result
+RETURN DISTINCT lv, ac;
