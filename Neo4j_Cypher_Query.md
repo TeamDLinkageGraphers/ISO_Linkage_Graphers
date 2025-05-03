@@ -133,8 +133,9 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 //  Return all components
 RETURN DISTINCT base, lm, lv, ac;
 ```
+
+3rd company - Conier Chem & Pharma Limited
 ```
-##3rd company - Conier Chem & Pharma Limited
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
