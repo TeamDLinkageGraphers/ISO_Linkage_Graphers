@@ -93,7 +93,7 @@ WHERE companyName IS NOT NULL AND companyName <> ''
 MERGE (ac:AssociatedCompany {name: companyName})
 MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
-// Return all components
+//  Return all components
 RETURN DISTINCT base, lm, lv, ac;
 
 //3rd company - Conier Chem & Pharma Limited
@@ -199,7 +199,7 @@ WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
      trim(row.`Linkage_Value`) AS linkValue,
      trim(row.`Linkage_Method`) AS linkMethod
-WHERE baseName = 'Hebei Miaoyin Technology Co., Ltd'
+WHERE baseName = 'Shanghai Run Biotech Co., Ltd'
   AND assocName IS NOT NULL AND assocName <> ''
   AND linkValue IS NOT NULL AND linkValue <> ''
   AND linkMethod IS NOT NULL AND linkMethod <> ''
@@ -443,7 +443,7 @@ WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
      trim(row.`Linkage_Value`) AS linkValue,
      trim(row.`Linkage_Method`) AS linkMethod
-WHERE baseName = 'Hubei Enxing Biotechnology Co., Ltd'
+WHERE baseName = 'Career Henan Chemical Co'
   AND assocName IS NOT NULL AND assocName <> ''
   AND linkValue IS NOT NULL AND linkValue <> ''
   AND linkMethod IS NOT NULL AND linkMethod <> ''
