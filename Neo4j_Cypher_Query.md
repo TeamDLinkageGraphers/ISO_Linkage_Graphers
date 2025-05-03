@@ -1,6 +1,10 @@
+## Introduction 
+NEO4j 
+
+```
 //file with cypher query for top companies 
 //Cyphe query for 1st company - Shanghai Hao Zhun Biological Technology Co., Ltd
-LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
+LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row # to load the data file 
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
      trim(row.`Linkage_Value`) AS linkValue,
@@ -9,7 +13,6 @@ WHERE baseName = 'Shanghai Hao Zhun Biological Technology Co., Ltd'
   AND assocName IS NOT NULL AND assocName <> ''
   AND linkValue IS NOT NULL AND linkValue <> ''
   AND linkMethod IS NOT NULL AND linkMethod <> ''
-
 // Step 1: Aggregate
 WITH baseName, linkMethod, linkValue,
      collect(DISTINCT assocName) AS assocCompanies,
@@ -46,8 +49,10 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // Final Return
 RETURN DISTINCT base, lm, lv, ac;
+```
 
 
+### 2nd company ()
 //2nd company - Amadis Chemical Company Limited
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
