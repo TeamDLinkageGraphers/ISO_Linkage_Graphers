@@ -1,6 +1,37 @@
 ## Introduction 
 NEO4j 
 
+The following steps are consistently followed in all Cypher queries provided for different base companies:
+
+Data Loading & Cleaning:
+The CSV file is loaded, and necessary fields (Base_Consolidation_Name, Associated_Company_Name, Linkage_Value, and Linkage_Method) are trimmed and extracted. Null or empty values are filtered out.
+
+Company-Specific Filtering:
+The query filters rows to isolate records related to one specific base company at a time.
+
+Top Linkage Identification:
+For that company:
+
+The data is grouped by linkage method and value.
+Frequency of usage is calculated.
+The top two most frequently used linkages (e.g., phone numbers, emails) are selected.
+
+Graph Node Creation:
+
+A node is created for the base company.
+Linkage method and linkage value nodes are created.
+Relationships are established:
+Base Company → Linkage Method → Linkage Value.
+
+Associated Companies Connection:
+All companies connected via the selected linkage values are added as nodes.
+They are linked to the corresponding linkage value.
+
+Final Result:
+A subgraph is created that shows how each company connects to others through its top communication linkages.
+
+This logic is repeated across all queries to generate consistent graph structures for each company.
+
 ```
 //file with cypher query for top companies 
 //Cyphe query for 1st company - Shanghai Hao Zhun Biological Technology Co., Ltd
@@ -52,8 +83,8 @@ RETURN DISTINCT base, lm, lv, ac;
 ```
 
 
-### 2nd company ()
-//2nd company - Amadis Chemical Company Limited
+```
+###2nd company - Amadis Chemical Company Limited
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -100,8 +131,9 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 //  Return all components
 RETURN DISTINCT base, lm, lv, ac;
-
-//3rd company - Conier Chem & Pharma Limited
+```
+```
+##3rd company - Conier Chem & Pharma Limited
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -148,9 +180,10 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 //  Final RETURN for graph visualization
 RETURN DISTINCT base, lm, lv, ac;
+```
 
-
-//4th company - Hebei Miaoyin Technology Co., Ltd
+```
+##4th company - Hebei Miaoyin Technology Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -197,8 +230,10 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 //  Final Return
 RETURN DISTINCT base, lm, lv, ac;
+```
 
-//5th company - Shanghai Run Biotech Co., Ltd
+```
+##5th company - Shanghai Run Biotech Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -245,9 +280,10 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // STEP 4: Return full graph structure
 RETURN DISTINCT base, lm, lv, ac;
+```
 
-
-//6th company - Laidiou Biological Technology Co., Ltd
+```
+##6th company - Laidiou Biological Technology Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -294,9 +330,10 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // FINAL: Return full graph
 RETURN DISTINCT base, lm, lv, ac;
+```
 
-
-//7th company - Henan Sunlake Enterprise Corporation
+```
+##7th company - Henan Sunlake Enterprise Corporation
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -343,8 +380,10 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // FINAL: Return entire graph
 RETURN DISTINCT base, lm, lv, ac;
+```
 
-//8th company - Dc Chemicals
+```
+##8th company - Dc Chemicals
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -391,9 +430,10 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // FINAL: Return everything
 RETURN base, lm, lv, ac;
+```
 
-
-//9th company - Hubei Enxing Biotechnology Co., Ltd
+```
+##9th company - Hubei Enxing Biotechnology Co., Ltd
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -441,8 +481,10 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // FINAL GRAPH RETURN
 RETURN base, lm, lv, ac;
+```
 
-//10th company - Career Henan Chemical Co
+```
+##10th company - Career Henan Chemical Co
 LOAD CSV WITH HEADERS FROM 'file:///Company_Linkage_data.csv' AS row
 WITH trim(row.`Base_Consolidation_Name`) AS baseName,
      trim(row.`Associated_Company_Name`) AS assocName,
@@ -490,3 +532,4 @@ MERGE (lv)-[:HAS_ASSOCIATED_COMPANY]->(ac)
 
 // Final result: Show complete graph
 RETURN DISTINCT base, lm, lv, ac;
+```
