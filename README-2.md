@@ -3,7 +3,7 @@ _Entity Relationship Modeling & Visualization with Gremlin + Python_
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/release/python-3100/)
 [![AWS Neptune](https://img.shields.io/badge/AWS-Neptune-green)](https://aws.amazon.com/neptune/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: GNU](https://img.shields.io/badge/License-GNU-blue.svg)](LICENSE)
 
 ---
 
@@ -80,19 +80,18 @@ Edges can carry metadata like linkage count, source trust, or timestamps.
 
 > Run the notebook: `Graph_Visualizations_AWS_Neptune.ipynb`
 
-This notebook:
-- Sends queries to Neptune via Gremlin
-- Extracts subnetworks (e.g., companies linked by the same phone/email)
-- Uses **PyVis** to generate HTML-based interactive graphs
-- Helps analysts inspect clusters, high-degree nodes, and anomalies
+Once the graph is constructed, you can explore its structure visually using **Neptune’s built-in Graph Explorer**:
 
-Example visual:
-```python
-from pyvis.network import Network
-net = Network(notebook=True)
-net.from_nx(nx_subgraph)
-net.show("graph.html")
-```
+- Go to your **Neptune Workbench instance**
+- Click on the notebook (ensure its status is “Ready”)
+- From the **Actions** menu, choose **“Open Graph Explorer”**
+
+This will open an interactive UI that shows:
+- Connected components
+- High-degree nodes (companies sharing many contact points)
+- Visual layout controls to reposition and inspect clusters
+
+The Graph Explorer supports various layout algorithms, node labels, and filtering options. You can re-run the layout for clarity or focus on specific attributes like `name`, `value`, or `linkage type`.
 
 ---
 
@@ -136,7 +135,7 @@ python-dotenv>=1.0
 
 ## 📜 License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the GNU License. See [LICENSE](LICENSE) for details.
 
 ---
 
