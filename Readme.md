@@ -7,11 +7,11 @@ _Linked‑data analytics with AWS Neptune_
 
 ## 1. Project Overview
 This repository contains code, notebooks, and cleaned datasets that power our graph‑based investigation into fentanyl trafficking networks.  
-We ingest **∼10 k+ corporate‑linkage records** (emails, phones, chat handles, etc.), transform them into a **four‑layer graph model** (Company → Contact Type → Contact Value → Associated Company), and load the structure into **AWS Neptune** for scalable, real‑time analysis :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}.
+We ingest **∼10 k+ corporate‑linkage records** (emails, phones, chat handles, etc.), transform them into a **four‑layer graph model** (Company → Contact Type → Contact Value → Associated Company), and load the structure into **AWS Neptune** for scalable, real‑time analysis.
 
 Key capabilities
 - Automated CSV‑to‑Neptune loader with minimal config  
-- Re‑usable Gremlin traversals for path search, centrality, and community detection :contentReference[oaicite:2]{index=2}:contentReference[oaicite:3]{index=3}  
+- Re‑usable Gremlin traversals for path search, centrality, and community detection  
 - Jupyter Lab notebooks for ad‑hoc EDA and Neptune Graph Explorer launch  
 - Lightweight visual dashboards (PyVis / Tableau workbook stubs)  
 
