@@ -1,0 +1,22 @@
+# Core data manipulation
+pandas>=2.1
+numpy>=1.26
+
+# AWS / Neptune
+boto3>=1.34
+gremlinpython>=3.7          # Gremlin driver used in Neptune Workbench
+neptune-python-utils>=1.3   # Handy helpers from AWS samples
+
+# Graph analytics & visualisation
+networkx>=3.3
+pyvis>=0.3.2
+matplotlib>=3.8             # Used for quick EDA plots inside notebooks
+
+# Notebook environment
+jupyterlab>=4.1
+ipython>=8.23
+python-dotenv>=1.0          # Loads NEPTUNE_* env vars from .env
+
+# Optional (comment out if unused)
+tqdm>=4.66
+requests>=2.31
