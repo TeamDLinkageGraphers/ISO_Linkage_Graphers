@@ -1,9 +1,9 @@
 # Augment Linkage Evidence & Exploration  
 _Linked‑data analytics with AWS Neptune_
 
-![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-[![License: MIT](https://img.shields.io/badge/License-GNU-blue.svg)](LICENSE)
-![Neptune](https://img.shields.io/badge/AWS-Neptune-green)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/release/python-3100/)
+[![AWS Neptune](https://img.shields.io/badge/AWS-Neptune-green)](https://aws.amazon.com/neptune/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## 1. Project Overview
 This repository contains code, notebooks, and cleaned datasets that power our graph‑based investigation into fentanyl trafficking networks.  
