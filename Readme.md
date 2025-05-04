@@ -2,7 +2,7 @@
 _Linked‑data analytics with AWS Neptune_
 
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-![License](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Neptune](https://img.shields.io/badge/AWS-Neptune-green)
 
 ## 1. Project Overview
