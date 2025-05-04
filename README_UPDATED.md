@@ -134,7 +134,7 @@ This project is licensed under the GNU License. See [LICENSE](LICENSE) for detai
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 - TraCCC, GMU, and MITRE for guidance on fentanyl trafficking network analysis  
 - AWS Neptune samples and Gremlin community tools
