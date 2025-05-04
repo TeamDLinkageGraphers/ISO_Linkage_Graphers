@@ -13,7 +13,6 @@ Key capabilities
 - Automated CSV‑to‑Neptune loader with minimal config  
 - Re‑usable Gremlin traversals for path search, centrality, and community detection  
 - Jupyter Lab notebooks for ad‑hoc EDA and Neptune Graph Explorer launch  
-- Lightweight visual dashboards (PyVis / Tableau workbook stubs)  
 
 ---
 
