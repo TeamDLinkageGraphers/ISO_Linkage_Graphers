@@ -3,7 +3,7 @@ _Entity Relationship Modeling & Visualization with Gremlin + Python_
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/release/python-3100/)
 [![AWS Neptune](https://img.shields.io/badge/AWS-Neptune-green)](https://aws.amazon.com/neptune/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: GNU](https://img.shields.io/badge/License-GNU-blue.svg)](LICENSE)
 
 ---
 
@@ -130,7 +130,7 @@ python-dotenv>=1.0
 
 ## 📜 License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the GNU License. See [LICENSE](LICENSE) for details.
 
 ---
 
