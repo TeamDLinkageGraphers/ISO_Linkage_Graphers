@@ -7,7 +7,7 @@ _Entity Relationship Modeling & Visualization with Gremlin + Python_
 
 ---
 
-## 📌 Project Summary
+## Project Summary
 
 This project models **company-level contact linkages** using a layered graph stored in **AWS Neptune** and queried using **Gremlin**. It includes:
 
@@ -20,7 +20,7 @@ These notebooks enable investigators and analysts to explore communication-based
 
 ---
 
-## 🧠 Core Notebooks
+## Core Notebooks
 
 | Notebook | Purpose |
 |----------|---------|
@@ -29,7 +29,7 @@ These notebooks enable investigators and analysts to explore communication-based
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1. Clone the Repository
 
@@ -58,7 +58,7 @@ NEPTUNE_PORT=8182
 
 ---
 
-## 🚀 Running the Project
+## Running the Project
 
 ### A. Build and Load the Graph
 
@@ -90,7 +90,7 @@ Once the graph is loaded, explore it using **AWS Neptune’s built-in Graph Expl
 
 ---
 
-## 🧪 Example Queries
+## Example Queries
 
 - **k-hop neighbors:**
 ```gremlin
@@ -106,7 +106,7 @@ g.V().hasLabel('ContactValue').has('value', '123-456-7890')
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 ```
 gremlinpython>=3.7
@@ -120,7 +120,7 @@ python-dotenv>=1.0
 
 ---
 
-## 🧩 Outputs
+## Outputs
 
 - Graph structure visible in Neptune’s **Graph Explorer**
 - Gremlin query results (e.g., linked company names, paths)
@@ -128,7 +128,7 @@ python-dotenv>=1.0
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the GNU License. See [LICENSE](LICENSE) for details.
 
