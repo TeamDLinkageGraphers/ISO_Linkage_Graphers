@@ -1,6 +1,6 @@
-#  Neptune Graph Ingestion Script (ISO_Main1.xlsx) -- load the dataset
+#  Neptune Graph Ingestion Script For Key Value and 3NF Common Linkage Data) 
 
-This script ingests company-attribute linkage data from an Excel file (`ISO_Main1.xlsx`) into an **Amazon Neptune** graph database using **Gremlin** queries.
+This script ingests company-attribute linkage data from an Excel file (`ISO_Main1.xlsx` for the Key Value) into an **Amazon Neptune** graph database using **Gremlin** queries.
 
 ##  Overview
 
@@ -32,7 +32,7 @@ Expected columns:
 (Company) --[LINKED_COMPANY { via: Attribute_Value }]--> (Company)
 ```
 
-Datasets used :
+Datasets used  for the 3NF:
 ```
 ISO_Linkage1.xlsx
 ISO_Company.xlsx
@@ -40,10 +40,64 @@ ISO_Company.xlsx
 ```
 
 How It Works
-1. Preprocessing & Cleanup
-Drops rows with missing data
+# 🔗 3NF Company Linkage Ingestion Script (AWS Neptune)
+Check the Key_Vlaue-3NF-2.ipynb file.
 
-Escapes special characters from string fields
+This script processes and ingests structured 3NF (Third Normal Form) data from Excel files into an **Amazon Neptune** graph database. It builds a detailed graph of companies, communication methods (emails, phones, chats), and payment methods to help identify hidden linkages and shared attributes among organizations.
+
+---
+
+##  Inut Files
+
+- **ISO_Linkage1.xlsx**  
+  Contains company-to-linkage relationships such as email, phone, or chat-based connections.  
+  **Columns:**
+  - `Company Name`
+  - `Linkage Method` (Email, Phone, Chat, etc.)
+  - `Linkage Value Type` (e.g., WeChat, WhatsApp for chat)
+  - `Linkage Value`
+
+- **ISO_Company.xlsx**  
+  Contains metadata about companies and their payment preferences.  
+  **Columns:**
+  - `Company`
+  - `Payment method`
+
+---
+
+##  Graph Schema
+
+```text
+(Company) 
+  ├── has_email / has_phone / has_chat_{type} ──> (LinkageValue)
+  ├── uses_payment_method ──> (PaymentMethod)
+  ├── LinkedCompany (via shared linkage value) ──> (Company)
+
+(LinkageMethod) ── has_value ──> (LinkageValue)
+(LinkageValueType) ── has_value ──> (LinkageValue)
+(LinkageMethod) ── has_type ──> (LinkageValueType)
+(LinkageValue) ── used_by ──> (Company)
+
+```
+
+Key Functionalities
+Node Creation
+Company, LinkageMethod, LinkageValue, LinkageValueType, PaymentMethod nodes are created uniquely.
+
+Duplicate nodes are avoided using fold().coalesce() logic.
+
+🔄 Edge Creation
+Adds multiple edge types such as:
+
+has_email, has_phone, has_chat_wechat, etc. based on method
+
+has_value, has_type, used_by, uses_payment_method
+
+Dynamically constructs edge labels based on sanitized input.
+
+
+1. Company-to-Company Linkages
+If two or more companies share the same Linkage Value (e.g., same phone or email), they are connected using:
 
 2. Node Creation
 Creates nodes for each:
