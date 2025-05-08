@@ -71,7 +71,7 @@ In the provided screenshot, **Shanghai Ditao Chemical Technology Co., Ltd** is s
 
 - Tableau Desktop (2021.4+ recommended)
 - Internet connection to load the Tableau Tree extension
-- Extension downloaded from: [Tableau Extension Gallery](https://extensiongallery.tableau.com/)
+- Tree Extenssions
 
 ---
 
@@ -89,7 +89,7 @@ In the provided screenshot, **Shanghai Ditao Chemical Technology Co., Ltd** is s
 
 ---
 
-## 📜 License
+## License
 
 This dashboard is provided for academic and investigative use.  
 MIT License © 2025 Team ISO Linkage Graphers
