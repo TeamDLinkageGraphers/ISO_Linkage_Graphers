@@ -1,4 +1,4 @@
-# Company Linkage Analytics on AWS Neptune  
+# Curated Association Dataset Visulization on AWS Neptune  
 _Entity Relationship Modeling & Visualization with Gremlin + Python_
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/release/python-3100/)
@@ -24,8 +24,8 @@ These notebooks enable investigators and analysts to explore communication-based
 
 | Notebook | Purpose |
 |----------|---------|
-| `Company_Attribute_Linkages_AWS_Neptune.ipynb` | Loads linkage data, constructs Neptune graph using Gremlin |
-| `Graph_Visualizations_AWS_Neptune.ipynb`      | Launches and navigates Neptune’s Graph Explorer |
+| `Curated_Associations Dataset .ipynb` | Loads linkage data, constructs Neptune graph using Gremlin |
+
 
 ---
 
