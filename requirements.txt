@@ -1,5 +1,1 @@
-boto3
-pandas
-networkx
-matplotlib
-jupyter
+Local Computer with RAM and GPU Support 
