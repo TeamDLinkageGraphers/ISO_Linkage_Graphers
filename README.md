@@ -11,13 +11,13 @@ This repository is structured into multiple branches, each targeting a specific 
 |--------|-------------|--------|
 | [`tableau-Interactive-graphs`](../../tree/tableau-Interactive-graphs) | Implements dynamic dashboards and filters in Tableau to visualize company linkage networks. | ✅ Active |
 | [`Neo4j-Graph-Implementation`](../../tree/Neo4j-Graph-Implementation) | Uses Neo4j to model relationships between base and associated companies using Cypher queries. | ✅ Active |
-| [`AWS-Neptune`](../../tree/AWS-Neptune) | Contains processed, cleaned, and curated datasets formatted for graph loading in both Neo4j and Neptune. | ✅ Active 
+| [`AWS-Neptune`](../../tree/AWS-Neptune) | Contains processed, cleaned, and curated datasets formatted for graph loading in AWS Neptune Cluster. | ✅ Active 
 
 ---
 
 ## Overview
 
-Our project aims to uncover hidden corporate linkages and communication channels using multiple data sources, including emails, phone numbers, and chat handles. We use both **local graph modeling** (Neo4j) and **cloud-native graph databases** (AWS Neptune), with visual insights powered by **Tableau**.
+Our project aims to uncover hidden corporate linkages and communication channels using multiple data sources, including emails, phone numbers, and chat handles. We use both **local graph modeling** (Neo4j) and **cloud-native graph databases** (AWS Neptune), and also interactive  visual insights powered by **Tableau**.
 
 ---
 
