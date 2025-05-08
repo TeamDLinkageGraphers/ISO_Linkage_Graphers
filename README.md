@@ -11,8 +11,7 @@ This repository is structured into multiple branches, each targeting a specific 
 |--------|-------------|--------|
 | [`tableau-Interactive-graphs`](../../tree/tableau-Interactive-graphs) | Implements dynamic dashboards and filters in Tableau to visualize company linkage networks. | ✅ Active |
 | [`Neo4j-Graph-Implementation`](../../tree/Neo4j-Graph-Implementation) | Uses Neo4j to model relationships between base and associated companies using Cypher queries. | ✅ Active |
-| [`AWS-Curated-Data-Linkages-and-Associated`](../../tree/AWS-Curated-Data-Linkages-and-Associated) | Contains processed, cleaned, and curated datasets formatted for graph loading in both Neo4j and Neptune. | ✅ Active |
-| [`AWS-Neptune-graph-implementation`](../../tree/AWS-Neptune-graph-implementation) | Sets up scalable graph processing on AWS Neptune using Gremlin and Jupyter Workbench. | ✅ Active |
+| [`AWS-Curated-Data-Linkages-and-Associated`](../../tree/AWS-Neptune) | Contains processed, cleaned, and curated datasets formatted for graph loading in both Neo4j and Neptune. | ✅ Active 
 
 ---
 
@@ -28,8 +27,8 @@ Each sub-branch can be accessed directly for in-depth analysis and code:
 
 - 🔗 [Tableau Dashboards](../../tree/tableau-Interactive-graphs)
 - 🔗 [Neo4j Graph Implementation](../../tree/Neo4j-Graph-Implementation)
-- 🔗 [AWS Curated Dataset Prep](../../tree/AWS-Curated-Data-Linkages-and-Associated)
-- 🔗 [AWS Neptune Graph Implementation](../../tree/AWS-Neptune-graph-implementation)
+- 🔗 [AWS Curated Dataset Prep](../../tree/AWS-Neptune)
+
 
 ---
 
