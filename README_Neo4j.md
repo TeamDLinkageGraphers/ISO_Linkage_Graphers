@@ -85,5 +85,8 @@ Built With
 - CSV Dataset – Structured linkage data
 - Manual + Scripted Analysis – For top companies and relationship extraction
 
+VIsulizations:
+![image](https://github.com/user-attachments/assets/e71c2fca-df60-4aab-88ee-aa7607fb310c)
+
 
 
