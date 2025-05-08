@@ -56,6 +56,10 @@ The dashboard visualizes **Base Companies** as central nodes and their respectiv
    - Combined worksheets, filters, and graph into a single layout.
    - Made interactive using filter actions and extension event listeners.
 
+
+Visulization:
+![image](https://github.com/user-attachments/assets/7e2994ba-4988-43cf-94e4-146f5b517ebe)
+
 ---
 
 ##  Example
