@@ -81,7 +81,7 @@ In the provided screenshot, **Shanghai Ditao Chemical Technology Co., Ltd** is s
 
 ## Files
 
-- `Company_Linkage_Dashboard.twbx`: Packaged Tableau workbook
+- `DAEN 690_tableau Final 1.twbx`: Packaged Tableau workbook
 - `data_linkages.csv`: Cleaned dataset used to power the dashboard
 
 ---
