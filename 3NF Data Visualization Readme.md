@@ -2,6 +2,7 @@
 
 This script ingests company-attribute linkage data from an Excel file (`ISO_Main1.xlsx` for the Key Value) into an **Amazon Neptune** graph database using **Gremlin** queries.
 
+** The main dataset used for the keyvalue and 3NF commom linkage data is Consolidated_TraCCC_KV_Master(In_Work7). **
 ##  Overview
 
 The goal is to model complex corporate relationships in a graph format with the following structure:
