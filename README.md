@@ -2,7 +2,7 @@
 # Tableau Interactive Company Linkage Dashboard
 
 This dashboard was created in Tableau to visually and interactively explore corporate linkages using graph-based layouts. The goal is to allow investigators, researchers, and analysts to explore how companies are connected based on shared communication identifiers such as email addresses and phone numbers.
-
+The dashboard was created with Assocate_Reset_VRelease.xlsx
 
 ##  Overview
 
